@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orange Army – Professional Network for Accountants, Tax Practitioners &amp; Bookkeepers</title>
+  <meta name="description" content="Orange Army is a curated network of experienced compliance professionals under AfricaKai. Earn extra income through structured, remote financial work — no client management required."/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ORANGE ARMY HERO — distinct identity */
+    .oa-hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:100px 6% 80px;background:#0f0f0f;}
+    .oa-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(232,75,10,0.2) 0%,transparent 60%),linear-gradient(180deg,#0f0f0f 0%,#1a1a1a 100%);}
+    .oa-hero-pattern{position:absolute;inset:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='%23E84B0A' stroke-width='1'/%3E%3Ccircle cx='40' cy='40' r='35' fill='none' stroke='%23E84B0A' stroke-width='0.5'/%3E%3C/svg%3E");}
+    .oa-hero-orb{position:absolute;border-radius:50%;filter:blur(100px);}
+    .oa-hero-orb-1{width:700px;height:700px;background:radial-gradient(circle,var(--orange),transparent 70%);top:-300px;right:-200px;opacity:0.2;animation:pulse 8s ease-in-out infinite;}
+    .oa-hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--red-dark),transparent 70%);bottom:-150px;left:0;opacity:0.25;animation:pulse 10s ease-in-out infinite reverse;}
+    .oa-hero-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:80px;align-items:center;width:100%;}
+    .oa-hero-text{}
+    .oa-hero-eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--orange-light);font-size:0.75rem;font-weight:600;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:22px;opacity:0;animation:fadeUp 0.8s 0.15s forwards;}
+    .oa-hero-eyebrow::before{content:'';display:block;width:30px;height:2px;background:var(--orange-light);}
+    .oa-hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:900;color:white;line-height:1.0;margin-bottom:8px;opacity:0;animation:fadeUp 0.8s 0.3s forwards;}
+    .oa-hero-sub-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1rem,2.5vw,1.6rem);font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:28px;opacity:0;animation:fadeUp 0.8s 0.45s forwards;}
+    .oa-hero p{font-size:1.05rem;color:rgba(255,255,255,0.65);max-width:520px;margin-bottom:40px;font-weight:300;line-height:1.9;opacity:0;animation:fadeUp 0.8s 0.6s forwards;}
+    .oa-hero-logo{opacity:0;animation:fadeIn 1s 0.8s forwards;flex-shrink:0;}
+    .oa-hero-logo img{width:260px;height:auto;filter:drop-shadow(0 0 40px rgba(232,75,10,0.3));}
+    .oa-hero-actions{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s 0.75s forwards;}
+
+    /* WHO IS IT FOR */
+    .oa-for{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.05);}
+    .oa-for-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+    .oa-for-item{padding:40px 32px;background:#161616;text-align:center;transition:background 0.3s;}
+    .oa-for-item:hover{background:#1e1e1e;}
+    .oa-for-icon{font-size:2.5rem;margin-bottom:16px;}
+    .oa-for-item h3{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:1px;color:white;margin-bottom:10px;}
+    .oa-for-item p{font-size:0.86rem;color:rgba(255,255,255,0.5);line-height:1.75;font-weight:300;}
+
+    /* HOW IT WORKS */
+    .oa-how{background:#111111;}
+    .oa-how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;margin-top:48px;}
+    .oa-how-item{padding:32px 24px;background:#161616;border-radius:8px;border-top:2px solid var(--orange);text-align:center;transition:transform 0.3s;}
+    .oa-how-item:hover{transform:translateY(-5px);}
+    .oa-how-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:12px;}
+    .oa-how-item h4{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;color:white;margin-bottom:8px;}
+    .oa-how-item p{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300;}
+
+    /* WHAT YOU GET */
+    .oa-benefits{background:#0f0f0f;}
+    .oa-benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px;}
+    .oa-benefit{background:#161616;border-radius:8px;padding:32px;border-left:3px solid var(--orange);transition:transform 0.3s,box-shadow 0.3s;}
+    .oa-benefit:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+    .oa-benefit-icon{font-size:1.8rem;margin-bottom:14px;}
+    .oa-benefit h4{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.5px;color:white;margin-bottom:8px;}
+    .oa-benefit p{font-size:0.86rem;color:rgba(255,255,255,0.5);line-height:1.75;font-weight:300;}
+
+    /* POSITIONING — what OA is NOT */
+    .oa-different{background:#161616;padding:60px 6%;}
+    .oa-different-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+    .not-list,.is-list{list-style:none;}
+    .not-list li,.is-list li{display:flex;align-items:center;gap:12px;font-size:0.9rem;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+    .not-list li:last-child,.is-list li:last-child{border-bottom:none;}
+    .not-list li{color:rgba(255,255,255,0.4);}
+    .not-list li::before{content:'✕';color:rgba(255,255,255,0.2);font-size:0.8rem;flex-shrink:0;width:20px;}
+    .is-list li{color:rgba(255,255,255,0.85);}
+    .is-list li::before{content:'✓';color:var(--orange);font-weight:700;flex-shrink:0;width:20px;}
+    .oa-col-title{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;}
+    .not-col-title{color:rgba(255,255,255,0.3);}
+    .is-col-title{color:var(--orange-light);}
+
+    /* REGISTER FORM */
+    .oa-register{background:#0f0f0f;}
+    .oa-register-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:64px;align-items:flex-start;}
+    .oa-form-card{background:#161616;border-radius:10px;padding:40px;border:1px solid rgba(255,255,255,0.06);}
+    .oa-form-card h3{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;margin-bottom:6px;}
+    .oa-form-card h3 em{font-style:normal;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .oa-form-card p{font-size:0.86rem;color:rgba(255,255,255,0.5);margin-bottom:28px;line-height:1.7;}
+    .oa-form-card .form-group label{color:rgba(255,255,255,0.7);}
+    .oa-form-card .form-group input,.oa-form-card .form-group select,.oa-form-card .form-group textarea{background:#1e1e1e;border-color:rgba(255,255,255,0.1);color:white;}
+    .oa-form-card .form-group input::placeholder,.oa-form-card .form-group textarea::placeholder{color:rgba(255,255,255,0.25);}
+    .oa-form-card .form-group input:focus,.oa-form-card .form-group select:focus,.oa-form-card .form-group textarea:focus{border-color:var(--orange);background:#222;}
+    .oa-form-card .form-group select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.4)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+    .oa-form-card .checkbox-group label{color:rgba(255,255,255,0.55);}
+    .oa-form-note{font-size:0.8rem;color:rgba(255,255,255,0.3);text-align:center;margin-top:12px;}
+    .oa-register-info h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:white;line-height:1.2;margin-bottom:18px;}
+    .oa-register-info h2 em{font-style:normal;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .oa-register-info p{font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.85;font-weight:300;margin-bottom:16px;}
+    .oa-warning{background:rgba(232,75,10,0.08);border:1px solid rgba(232,75,10,0.2);border-radius:6px;padding:20px 24px;margin-top:24px;}
+    .oa-warning p{font-size:0.86rem!important;color:rgba(255,255,255,0.6)!important;margin:0!important;}
+    .oa-warning strong{color:var(--orange-light);}
+
+    /* OA-specific form success */
+    .oa-form-success{display:none;background:rgba(232,75,10,0.08);border:1px solid rgba(232,75,10,0.2);border-radius:8px;padding:32px;text-align:center;color:var(--orange-light);}
+    .oa-form-success p:first-child{font-size:1.1rem;font-weight:600;margin-bottom:10px;}
+    .oa-form-success p:last-child{font-size:0.88rem;color:rgba(255,255,255,0.5);}
+
+    /* FOOTER override for dark page */
+    .oa-footer{background:#080808;border-top:1px solid rgba(255,255,255,0.05);}
+
+    /* section labels on dark bg */
+    .oa-section-label{display:inline-flex;align-items:center;gap:10px;color:var(--orange-light);font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;}
+    .oa-section-label::before{content:'';display:block;width:24px;height:2px;background:var(--orange-light);border-radius:2px;}
+    .oa-section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.7rem);font-weight:900;color:white;line-height:1.2;margin-bottom:18px;}
+    .oa-section-title em{font-style:normal;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .oa-section-sub{font-size:1rem;color:rgba(255,255,255,0.55);max-width:560px;line-height:1.85;font-weight:300;}
+
+    @media(max-width:900px){
+      .oa-hero-content{grid-template-columns:1fr;}
+      .oa-hero-logo{display:flex;justify-content:center;}
+      .oa-for-grid{grid-template-columns:1fr;}
+      .oa-different-inner{grid-template-columns:1fr;}
+      .oa-register-inner{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body style="background:#0f0f0f;">
+
+<!-- OA NAV — dark themed -->
+<nav style="background:rgba(15,15,15,0.97);border-bottom-color:rgba(232,75,10,0.15);">
+  <a href="index.html" class="nav-logo">
+    <img src="orange-army-logo.png" alt="Orange Army Logo" style="height:44px;"/>
+    <div class="nav-logo-text">
+      <span class="nav-logo-name" style="color:white;">ORANGE ARMY</span>
+      <span class="nav-logo-tag">by AfricaKai</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" style="color:rgba(255,255,255,0.6);">AfricaKai Home</a></li>
+    <li><a href="careers.html" style="color:rgba(255,255,255,0.6);">Careers</a></li>
+    <li><a href="#register" class="nav-cta">Join the Network</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Menu" style="--charcoal:white;"><span style="background:white;"></span><span style="background:white;"></span><span style="background:white;"></span></button>
+</nav>
+
+<div class="mobile-menu" style="background:#111;color:white;">
+  <a href="index.html" style="color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);">AfricaKai Home</a>
+  <a href="careers.html" style="color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);">Careers</a>
+  <a href="#register" class="mob-cta">Join the Network</a>
+</div>
+
+<!-- HERO -->
+<section class="oa-hero">
+  <div class="oa-hero-bg"></div>
+  <div class="oa-hero-pattern"></div>
+  <div class="oa-hero-orb oa-hero-orb-1"></div>
+  <div class="oa-hero-orb oa-hero-orb-2"></div>
+  <div class="oa-hero-content">
+    <div class="oa-hero-text">
+      <div class="oa-hero-eyebrow">A Curated Professional Network</div>
+      <h1>Orange<br/>Army</h1>
+      <p class="oa-hero-sub-title">Accountants · Tax Practitioners · Bookkeepers</p>
+      <p>Do your skills. Earn your worth. No clients to manage. No practice to run. Just focused, structured, professional work — within a system built for quality and consistency.</p>
+      <div class="oa-hero-actions">
+        <a href="#register" class="btn btn-primary btn-lg">Join the Network</a>
+        <a href="#how" class="btn btn-lg" style="background:rgba(255,255,255,0.08);color:white;border:1.5px solid rgba(255,255,255,0.2);padding:16px 40px;border-radius:3px;font-weight:600;font-size:1rem;">How It Works</a>
+      </div>
+    </div>
+    <div class="oa-hero-logo">
+      <img src="orange-army-logo.png" alt="Orange Army"/>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS ORANGE ARMY -->
+<section style="background:#111111;border-top:1px solid rgba(255,255,255,0.05);">
+  <div style="max-width:820px;" class="reveal">
+    <div class="oa-section-label"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>What Is Orange Army</div>
+    <h2 class="oa-section-title">A Professional Network Built<br/>for <em>Serious People</em></h2>
+    <p style="font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.95;font-weight:300;margin-bottom:24px;">Orange Army is a curated network of experienced accountants, tax practitioners, and bookkeepers — brought together under a single, standards-driven system administered by AfricaKai.</p>
+    <p style="font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.95;font-weight:300;margin-bottom:24px;">It was created to solve a very real problem: there are thousands of highly skilled financial professionals in South Africa who have the qualifications and experience — but limited access to consistent, well-organised work. At the same time, AfricaKai's growing client base requires more capacity to deliver quality compliance and financial services.</p>
+    <p style="font-size:1.05rem;color:rgba(255,255,255,0.65);line-height:1.95;font-weight:300;margin-bottom:40px;">Orange Army bridges that gap. It is not a job board. It is not a freelancer marketplace. It is a <strong style="color:white;">controlled professional environment</strong> where vetted practitioners receive pre-packaged, remote work — with no client management, no admin burden, and earnings tied directly to the quality and volume of their output.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:24px;">
+        <p style="font-size:0.75rem;font-weight:700;letter-spacing:2.5px;color:var(--orange-light);text-transform:uppercase;margin-bottom:10px;">The Problem We Solve</p>
+        <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;font-weight:300;">Skilled professionals with no consistent pipeline of quality work.</p>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:24px;">
+        <p style="font-size:0.75rem;font-weight:700;letter-spacing:2.5px;color:var(--orange-light);text-transform:uppercase;margin-bottom:10px;">How We Solve It</p>
+        <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;font-weight:300;">A structured system that connects vetted professionals to real, ready-to-execute client work.</p>
+      </div>
+      <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:24px;">
+        <p style="font-size:0.75rem;font-weight:700;letter-spacing:2.5px;color:var(--orange-light);text-transform:uppercase;margin-bottom:10px;">What You Get</p>
+        <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;font-weight:300;">Flexible, remote work. No client management. Earnings based purely on your output and quality.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IS IT FOR -->
+<section class="oa-for">
+  <div style="text-align:center;" class="reveal">
+    <div class="oa-section-label" style="justify-content:center;"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>Who Is This For</div>
+    <h2 class="oa-section-title">Built for <em>Qualified Professionals</em></h2>
+    <p class="oa-section-sub" style="margin:0 auto;">Orange Army is for experienced financial professionals who want more — without the overhead of running a full practice or dealing with difficult clients.</p>
+  </div>
+  <div class="oa-for-grid reveal">
+    <div class="oa-for-item">
+      <div class="oa-for-icon">📊</div>
+      <h3>Accountants</h3>
+      <p>Qualified professionals with experience in financial statement preparation, management accounts, and business reporting.</p>
+    </div>
+    <div class="oa-for-item">
+      <div class="oa-for-icon">🧾</div>
+      <h3>Tax Practitioners</h3>
+      <p>Registered tax practitioners or experienced professionals with strong SARS eFiling and tax return skills.</p>
+    </div>
+    <div class="oa-for-item">
+      <div class="oa-for-icon">📚</div>
+      <h3>Bookkeepers</h3>
+      <p>Skilled bookkeepers proficient in maintaining accurate records, reconciliations, and day-to-day financial processing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT MAKES OA DIFFERENT -->
+<section class="oa-different">
+  <div class="oa-different-inner">
+    <div class="reveal">
+      <div class="oa-section-label"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>What Orange Army Is</div>
+      <h2 class="oa-section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);">Not a Marketplace.<br/><em>A Standard.</em></h2>
+      <p style="font-size:0.95rem;color:rgba(255,255,255,0.55);line-height:1.85;font-weight:300;max-width:420px;">Orange Army is not a platform where anyone can sign up. It is a controlled, standards-driven professional network — and that's precisely what makes it worth joining.</p>
+    </div>
+    <div class="reveal reveal-delay-2" style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+      <div>
+        <p class="oa-col-title not-col-title">Orange Army is NOT</p>
+        <ul class="not-list">
+          <li>A freelancer marketplace</li>
+          <li>An open directory</li>
+          <li>An informal network</li>
+          <li>A gig platform</li>
+          <li>A client-finding service</li>
+        </ul>
+      </div>
+      <div>
+        <p class="oa-col-title is-col-title">Orange Army IS</p>
+        <ul class="is-list">
+          <li>A curated professional network</li>
+          <li>Standards-driven &amp; controlled</li>
+          <li>Pre-packaged, structured work</li>
+          <li>Remote &amp; flexible</li>
+          <li>Quality-first environment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="oa-how" id="how">
+  <div style="text-align:center;" class="reveal">
+    <div class="oa-section-label" style="justify-content:center;"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>How It Works</div>
+    <h2 class="oa-section-title">Simple. <em>Structured.</em> Effective.</h2>
+    <p class="oa-section-sub" style="margin:0 auto;">The Orange Army model is designed to be straightforward — for professionals who want to work, not manage.</p>
+  </div>
+  <div class="oa-how-grid">
+    <div class="oa-how-item reveal reveal-delay-1">
+      <div class="oa-how-num">01</div>
+      <h4>Apply &amp; Get Vetted</h4>
+      <p>Submit your application. Shortlisted candidates complete a technical assessment before onboarding.</p>
+    </div>
+    <div class="oa-how-item reveal reveal-delay-2">
+      <div class="oa-how-num">02</div>
+      <h4>Onboard Into the System</h4>
+      <p>Successful applicants are onboarded into AfricaKai's structured delivery framework with clear standards.</p>
+    </div>
+    <div class="oa-how-item reveal reveal-delay-3">
+      <div class="oa-how-num">03</div>
+      <h4>Receive Structured Work</h4>
+      <p>Work is pre-packaged and clearly defined. No client communication. No admin. Just your technical skill.</p>
+    </div>
+    <div class="oa-how-item reveal reveal-delay-4">
+      <div class="oa-how-num">04</div>
+      <h4>Earn Based on Output</h4>
+      <p>Your income depends on your output, quality, and reliability. The better you perform, the more you earn.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="oa-benefits">
+  <div class="reveal">
+    <div class="oa-section-label"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>What You Get</div>
+    <h2 class="oa-section-title">Why Join <em>Orange Army</em></h2>
+    <p class="oa-section-sub">This is what a performance-driven professional network looks like in practice.</p>
+  </div>
+  <div class="oa-benefits-grid">
+    <div class="oa-benefit reveal reveal-delay-1"><div class="oa-benefit-icon">💰</div><h4>Additional Income</h4><p>Earn extra income on top of your existing work — without needing to build a separate client base.</p></div>
+    <div class="oa-benefit reveal reveal-delay-2"><div class="oa-benefit-icon">🏠</div><h4>Fully Remote</h4><p>All work is completed remotely. Work from anywhere in South Africa, on your schedule.</p></div>
+    <div class="oa-benefit reveal reveal-delay-3"><div class="oa-benefit-icon">🚫</div><h4>No Client Management</h4><p>Zero client communication or administrative responsibilities. You focus purely on technical work.</p></div>
+    <div class="oa-benefit reveal reveal-delay-4"><div class="oa-benefit-icon">📦</div><h4>Pre-Packaged Work</h4><p>Work is structured and clearly defined before it reaches you. No ambiguity, no scope creep.</p></div>
+    <div class="oa-benefit reveal reveal-delay-1"><div class="oa-benefit-icon">🏆</div><h4>High-Performance Environment</h4><p>Work alongside other vetted professionals within a system that rewards quality and consistency.</p></div>
+    <div class="oa-benefit reveal reveal-delay-2"><div class="oa-benefit-icon">📈</div><h4>Merit-Based Allocation</h4><p>More work, more income. Allocation is based on your quality, reliability, and turnaround time.</p></div>
+  </div>
+</section>
+
+<!-- REGISTER FORM -->
+<section class="oa-register" id="register">
+  <div class="oa-register-inner">
+    <div class="oa-register-info reveal">
+      <div class="oa-section-label"><span style="background:var(--orange-light);width:24px;height:2px;display:block;border-radius:2px;"></span>Join the Network</div>
+      <h2>Ready to Join<br/><em>Orange Army</em>?</h2>
+      <p>Complete the registration form to apply for a position in the Orange Army professional network. All applications are reviewed and shortlisted candidates will be contacted for a technical assessment.</p>
+      <p>Please ensure all information is accurate and complete. Incomplete applications may not be considered.</p>
+      <div class="oa-warning">
+        <p><strong>Important:</strong> This is a performance-driven environment. There is no fixed income — your earnings depend entirely on your output, quality, and consistency. Only apply if you are serious, experienced, and ready to deliver.</p>
+      </div>
+      <br/>
+      <div style="display:flex;align-items:center;gap:12px;padding:20px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+        <img src="logo.jpg" alt="AfricaKai" style="height:36px;border-radius:4px;"/>
+        <div>
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.35);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 2px;">Administered by</p>
+          <p style="font-size:0.9rem;color:rgba(255,255,255,0.7);font-weight:500;margin:0;">AfricaKai (Pty) Ltd</p>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="oa-form-card">
+        <h3>Compliance Agent <em>Registration</em></h3>
+        <p>Complete all sections accurately. This form is the first step to joining Orange Army.</p>
+        <div id="oaFormSuccess" class="oa-form-success">
+          <p>🟠 Application Received!</p>
+          <p>Thank you for registering your interest in Orange Army. We will review your application and be in touch within 5 business days regarding next steps.</p>
+        </div>
+        <form id="oaForm" onsubmit="submitOaForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" required placeholder="First name"/>
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" required placeholder="Last name"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" required placeholder="your@email.com"/>
+            </div>
+            <div class="form-group">
+              <label>Phone / WhatsApp *</label>
+              <input type="tel" required placeholder="0xx xxx xxxx"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Province *</label>
+            <select required>
+              <option value="">Select province</option>
+              <option>Limpopo</option><option>Gauteng</option><option>Mpumalanga</option>
+              <option>North West</option><option>Northern Cape</option><option>Western Cape</option>
+              <option>Eastern Cape</option><option>KwaZulu-Natal</option><option>Free State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Professional Category *</label>
+            <select required>
+              <option value="">Select your category</option>
+              <option>Accountant</option>
+              <option>Tax Practitioner</option>
+              <option>Bookkeeper</option>
+              <option>Accountant &amp; Tax Practitioner</option>
+              <option>Accountant &amp; Bookkeeper</option>
+              <option>All Three</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Years of Experience *</label>
+            <select required>
+              <option value="">Select experience level</option>
+              <option>1–2 years</option><option>3–5 years</option>
+              <option>6–10 years</option><option>More than 10 years</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Services You Can Deliver *</label>
+            <select required>
+              <option value="">Select primary service</option>
+              <option>Financial statement preparation</option>
+              <option>Tax returns (Individual)</option>
+              <option>Tax returns (Business/Corporate)</option>
+              <option>Bookkeeping &amp; reconciliations</option>
+              <option>All of the above</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Professional Regulatory Body *</label>
+            <select required>
+              <option value="">Select your regulatory body</option>
+              <option>SAICA – South African Institute of Chartered Accountants</option>
+              <option>SAIPA – South African Institute of Professional Accountants</option>
+              <option>CIMA – Chartered Institute of Management Accountants</option>
+              <option>ACCA – Association of Chartered Certified Accountants</option>
+              <option>SAIT – South African Institute of Tax Professionals</option>
+              <option>IAC – Institute of Accounting and Commerce</option>
+              <option>ICBA – Institute of Certified Bookkeepers and Accountants</option>
+              <option>AAT – Association of Accounting Technicians</option>
+              <option>Not yet registered with a body</option>
+              <option>Other</option>
+            </select>
+            <p class="form-note" style="color:rgba(255,255,255,0.35);">If your body is not listed, select "Other" and mention it below.</p>
+          </div>
+          <div class="form-group">
+            <label>Membership / Registration Number</label>
+            <input type="text" placeholder="Your membership or registration number (if applicable)"/>
+          </div>
+          <div class="form-group">
+            <label>Brief Professional Summary</label>
+            <textarea placeholder="Describe your experience and what you specialise in..."></textarea>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="oaAssessment" required/>
+            <label for="oaAssessment" style="color:rgba(255,255,255,0.55);">I understand a technical assessment may be required and that earnings are based on output and quality.</label>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:12px;">Submit Registration</button>
+          <p class="oa-form-note">Your information is handled in accordance with POPIA. We do not share your details.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="oa-footer" style="background:#080808;border-top:1px solid rgba(255,255,255,0.05);">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="orange-army-logo.png" alt="Orange Army" style="height:48px;"/>
+      <p style="margin-top:12px;">Orange Army is a curated professional network of accountants, tax practitioners, and bookkeepers — administered by AfricaKai (Pty) Ltd.</p>
+      <p class="footer-tagline" style="margin-top:16px;">Structured. Controlled. High-Performance.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Orange Army</h4>
+      <ul>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#register">Join the Network</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>AfricaKai</h4>
+      <ul>
+        <li><a href="index.html">AfricaKai Home</a></li>
+        <li><a href="compliance.html">Business Compliance</a></li>
+        <li><a href="consulting.html">Management Consulting</a></li>
+        <li><a href="careers.html">Careers</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span>admin@africakai.co.za</span></div>
+      <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><span>081 426 8987</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom" style="border-top-color:rgba(255,255,255,0.05);">
+    <p>&copy; 2025 Orange Army — Administered by AfricaKai (Pty) Ltd.</p>
+    <p class="footer-reg">Reg No: 2019/380527/07</p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+function submitOaForm(e) {
+  e.preventDefault();
+  document.getElementById('oaForm').style.display = 'none';
+  const s = document.getElementById('oaFormSuccess');
+  s.style.display = 'block';
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
