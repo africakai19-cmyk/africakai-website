@@ -144,26 +144,26 @@
           <div class="form-row">
             <div class="form-group">
               <label>Your Name *</label>
-              <input type="text" required placeholder="Full name"/>
+              <input type="text" name="Full Name" required placeholder="Full name"/>
             </div>
             <div class="form-group">
               <label>Company Name</label>
-              <input type="text" placeholder="Your business name (if applicable)"/>
+              <input type="text" name="Company Name" placeholder="Your business name (if applicable)"/>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Email Address *</label>
-              <input type="email" required placeholder="your@email.com"/>
+              <input type="email" name="Email" required placeholder="your@email.com"/>
             </div>
             <div class="form-group">
               <label>Phone / WhatsApp *</label>
-              <input type="tel" required placeholder="0xx xxx xxxx"/>
+              <input type="tel" name="Phone" required placeholder="0xx xxx xxxx"/>
             </div>
           </div>
           <div class="form-group">
             <label>I Am Enquiring About *</label>
-            <select required>
+            <select name="Enquiry Type" required>
               <option value="">Select a category</option>
               <option>Business Compliance Services</option>
               <option>Management Consulting / Funded Interns</option>
@@ -174,17 +174,17 @@
           <div class="form-group">
             <label>Services Needed (select all that apply)</label>
             <div class="service-select-grid">
-              <div class="service-option"><input type="checkbox" id="s1"/><label for="s1">Company Registration</label></div>
-              <div class="service-option"><input type="checkbox" id="s2"/><label for="s2">SARS / Tax Services</label></div>
-              <div class="service-option"><input type="checkbox" id="s3"/><label for="s3">Annual Returns (CIPC)</label></div>
-              <div class="service-option"><input type="checkbox" id="s4"/><label for="s4">UIF / COIDA</label></div>
-              <div class="service-option"><input type="checkbox" id="s5"/><label for="s5">Funded Intern Placement</label></div>
-              <div class="service-option"><input type="checkbox" id="s6"/><label for="s6">Bookkeeping / Admin</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s1" value="Company Registration"/><label for="s1">Company Registration</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s2" value="SARS / Tax Services"/><label for="s2">SARS / Tax Services</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s3" value="Annual Returns (CIPC)"/><label for="s3">Annual Returns (CIPC)</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s4" value="UIF / COIDA"/><label for="s4">UIF / COIDA</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s5" value="Funded Intern Placement"/><label for="s5">Funded Intern Placement</label></div>
+              <div class="service-option"><input type="checkbox" name="Services" id="s6" value="Bookkeeping / Admin"/><label for="s6">Bookkeeping / Admin</label></div>
             </div>
           </div>
           <div class="form-group">
             <label>Business Stage</label>
-            <select>
+            <select name="Business Stage">
               <option value="">Select your stage</option>
               <option>Just starting (pre-registration)</option>
               <option>New business (less than 1 year)</option>
@@ -195,11 +195,11 @@
           </div>
           <div class="form-group">
             <label>Tell Us More *</label>
-            <textarea required placeholder="Briefly describe your situation or what you need. The more detail you give, the more accurate your quote will be..."></textarea>
+            <textarea name="Message" required placeholder="Briefly describe your situation or what you need. The more detail you give, the more accurate your quote will be..."></textarea>
           </div>
           <div class="form-group">
             <label>How Did You Hear About Us?</label>
-            <select>
+            <select name="Referral Source">
               <option value="">Select one</option>
               <option>Google / Web Search</option>
               <option>WhatsApp / Referral</option>
