@@ -259,28 +259,32 @@ async function submitContactForm(e) {
   e.preventDefault();
   const form = document.getElementById('contactForm');
   const btn = form.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
   btn.textContent = 'Sending...';
   btn.disabled = true;
   try {
-    const response = await fetch(form.action, {
+    const data = new FormData(form);
+    const response = await fetch('https://formspree.io/f/xreryozo', {
       method: 'POST',
-      body: new FormData(form),
+      body: data,
       headers: { 'Accept': 'application/json' }
     });
-    if (response.ok) {
+    const json = await response.json();
+    if (response.ok && !json.errors) {
       form.style.display = 'none';
       const s = document.getElementById('contactSuccess');
       s.style.display = 'block';
       s.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      btn.textContent = 'Send Enquiry & Request Quote';
+      const errorMsg = json.errors ? json.errors.map(e => e.message).join(', ') : 'Unknown error';
+      btn.textContent = originalText;
       btn.disabled = false;
-      alert('Something went wrong. Please try again or email us directly at admin@africakai.co.za');
+      alert('Submission error: ' + errorMsg + '. Please email admin@africakai.co.za directly.');
     }
-  } catch {
-    btn.textContent = 'Send Enquiry & Request Quote';
+  } catch(err) {
+    btn.textContent = originalText;
     btn.disabled = false;
-    alert('Something went wrong. Please try again or email us directly at admin@africakai.co.za');
+    alert('Network error. Please email admin@africakai.co.za directly.');
   }
 }
 </script>

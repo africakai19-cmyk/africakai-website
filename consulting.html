@@ -8,6 +8,13 @@
   <link rel="stylesheet" href="style.css"/>
   <style>
     .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-top:48px;}
+    .consulting-intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+    .consulting-process{display:grid;grid-template-columns:1fr 1fr;gap:64px;}
+    @media(max-width:768px){
+      .sbip-content{grid-template-columns:1fr !important;}
+      .consulting-intro{grid-template-columns:1fr;}
+      .consulting-process{grid-template-columns:1fr;}
+    }
     .tier-card{border-radius:10px;overflow:hidden;box-shadow:var(--shadow);transition:transform 0.3s;}
     .tier-card:hover{transform:translateY(-5px);}
     .tier-header{padding:32px 36px;position:relative;}
@@ -112,7 +119,7 @@
     <div class="divider"></div>
     <p class="section-sub">Many South African businesses qualify for funded interns or employees through government and private funding entities — but lack the internal systems to maximise that opportunity. AfricaKai bridges that gap.</p>
   </div>
-  <div style="margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;" class="reveal">
+  <div class="consulting-intro reveal" style="margin-top:40px;">
     <div>
       <p style="font-size:0.95rem;color:var(--grey);line-height:1.9;font-weight:300;">Through our Funded Workforce Solutions service, we facilitate the placement of funded interns or employees into client companies. Once a funding entity allocates an individual through our intervention, that individual enters <strong style="color:var(--charcoal);">AfricaKai's Silver Bullet Internship Programme</strong> — ensuring they meet funder expectations while also contributing meaningfully to your operations.</p>
       <br/>
@@ -223,7 +230,7 @@
 
 <!-- PROCESS -->
 <section style="background:white;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;" class="reveal">
+  <div class="consulting-process reveal">
     <div>
       <div class="section-label">Our Process</div>
       <h2 class="section-title">How We <em>Work Together</em></h2>
