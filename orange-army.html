@@ -319,7 +319,7 @@
           <p>🟠 Application Received!</p>
           <p>Thank you for registering your interest in Orange Army. We will review your application and be in touch within 5 business days regarding next steps.</p>
         </div>
-        <form id="oaForm" onsubmit="submitOaForm(event)">
+        <form id="oaForm" action="https://formspree.io/f/myklnbyy" method="POST" onsubmit="submitOaForm(event)">
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>
@@ -456,12 +456,33 @@
 
 <script src="main.js"></script>
 <script>
-function submitOaForm(e) {
+async function submitOaForm(e) {
   e.preventDefault();
-  document.getElementById('oaForm').style.display = 'none';
-  const s = document.getElementById('oaFormSuccess');
-  s.style.display = 'block';
-  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const form = document.getElementById('oaForm');
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      form.style.display = 'none';
+      const s = document.getElementById('oaFormSuccess');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      btn.textContent = 'Submit Registration';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+    }
+  } catch {
+    btn.textContent = 'Submit Registration';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+  }
 }
 </script>
 </body>

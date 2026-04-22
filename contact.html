@@ -140,7 +140,7 @@
           <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">✅ Message Sent Successfully</p>
           <p>Thank you for reaching out. We'll review your enquiry and respond within one business day.</p>
         </div>
-        <form id="contactForm" onsubmit="submitContactForm(event)">
+        <form id="contactForm" action="https://formspree.io/f/xreryozo" method="POST" onsubmit="submitContactForm(event)">
           <div class="form-row">
             <div class="form-group">
               <label>Your Name *</label>
@@ -255,12 +255,33 @@
 
 <script src="main.js"></script>
 <script>
-function submitContactForm(e) {
+async function submitContactForm(e) {
   e.preventDefault();
-  document.getElementById('contactForm').style.display = 'none';
-  const s = document.getElementById('contactSuccess');
-  s.style.display = 'block';
-  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const form = document.getElementById('contactForm');
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      form.style.display = 'none';
+      const s = document.getElementById('contactSuccess');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      btn.textContent = 'Send Enquiry & Request Quote';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email us directly at admin@africakai.co.za');
+    }
+  } catch {
+    btn.textContent = 'Send Enquiry & Request Quote';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or email us directly at admin@africakai.co.za');
+  }
 }
 </script>
 </body>

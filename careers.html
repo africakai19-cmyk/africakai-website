@@ -204,7 +204,7 @@
         <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">✅ Application Received</p>
         <p>Thank you for applying. We will review your application and be in touch within 5 business days.</p>
       </div>
-      <form id="careerForm" onsubmit="submitCareerForm(event)">
+      <form id="careerForm" action="https://formspree.io/f/myklnbyy" method="POST" onsubmit="submitCareerForm(event)">
         <div class="form-row">
           <div class="form-group">
             <label>First Name *</label>
@@ -338,13 +338,33 @@
 
 <script src="main.js"></script>
 <script>
-function submitCareerForm(e) {
+async function submitCareerForm(e) {
   e.preventDefault();
   const form = document.getElementById('careerForm');
-  const success = document.getElementById('formSuccess');
-  form.style.display = 'none';
-  success.style.display = 'block';
-  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      form.style.display = 'none';
+      const s = document.getElementById('formSuccess');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      btn.textContent = 'Submit Application';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+    }
+  } catch {
+    btn.textContent = 'Submit Application';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+  }
 }
 </script>
 </body>
