@@ -319,7 +319,7 @@
           <p>🟠 Application Received!</p>
           <p>Thank you for registering your interest in Orange Army. We will review your application and be in touch within 5 business days regarding next steps.</p>
         </div>
-        <form id="oaForm" action="https://formspree.io/f/myklnbyy" method="POST" onsubmit="submitOaForm(event)">
+        <form id="oaForm" action="https://africakai-platform.vercel.app/api/oa-apply" method="POST" onsubmit="submitOaForm(event)">
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>
@@ -462,11 +462,26 @@ async function submitOaForm(e) {
   const btn = form.querySelector('button[type="submit"]');
   btn.textContent = 'Submitting...';
   btn.disabled = true;
+  const fd = new FormData(form);
+  const payload = {
+    full_name: `${fd.get('First Name') || ''} ${fd.get('Last Name') || ''}`.trim(),
+    email: fd.get('Email'),
+    phone: fd.get('Phone'),
+    province: fd.get('Province'),
+    professional_category: fd.get('Professional Category'),
+    years_experience: fd.get('Years of Experience'),
+    specializations: fd.get('Services') ? [fd.get('Services')] : [],
+    regulatory_body: fd.get('Regulatory Body'),
+    membership_number: fd.get('Membership Number'),
+    message: fd.get('Professional Summary'),
+    source: 'orange_army_page',
+    assessment_terms_agreed: fd.get('Agreed to Assessment Terms') || 'No',
+  };
   try {
     const response = await fetch(form.action, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
     if (response.ok) {
       form.style.display = 'none';
