@@ -32,6 +32,18 @@ function initReveal() {
   els.forEach(el => observer.observe(el));
 }
 
+// Portal login dropdown
+function initPortalDropdown() {
+  const portal = document.querySelector('.nav-portal');
+  if (!portal) return;
+  const toggle = portal.querySelector('.nav-portal-toggle');
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    portal.classList.toggle('open');
+  });
+  document.addEventListener('click', () => portal.classList.remove('open'));
+}
+
 // Active nav link
 function setActiveNav() {
   const path = window.location.pathname.split('/').pop() || 'index.html';
@@ -43,6 +55,7 @@ function setActiveNav() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
+  initPortalDropdown();
   initReveal();
   setActiveNav();
 });
