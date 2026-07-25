@@ -125,6 +125,7 @@
   <ul class="nav-links">
     <li><a href="index.html" style="color:rgba(255,255,255,0.6);">AfricaKai Home</a></li>
     <li><a href="careers.html" style="color:rgba(255,255,255,0.6);">Careers</a></li>
+    <li><a href="https://orange.africakai.co.za" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.6);">Member Login</a></li>
     <li><a href="#register" class="nav-cta">Join the Network</a></li>
   </ul>
   <button class="hamburger" aria-label="Menu" style="--charcoal:white;"><span style="background:white;"></span><span style="background:white;"></span><span style="background:white;"></span></button>
@@ -133,6 +134,7 @@
 <div class="mobile-menu" style="background:#111;color:white;">
   <a href="index.html" style="color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);">AfricaKai Home</a>
   <a href="careers.html" style="color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);">Careers</a>
+  <a href="https://orange.africakai.co.za" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.8);border-bottom-color:rgba(255,255,255,0.1);">Member Login</a>
   <a href="#register" class="mob-cta">Join the Network</a>
 </div>
 
@@ -319,7 +321,7 @@
           <p>🟠 Application Received!</p>
           <p>Thank you for registering your interest in Orange Army. We will review your application and be in touch within 5 business days regarding next steps.</p>
         </div>
-        <form id="oaForm" action="https://formspree.io/f/myklnbyy" method="POST" onsubmit="submitOaForm(event)">
+        <form id="oaForm" onsubmit="submitOaForm(event)">
           <div class="form-row">
             <div class="form-group">
               <label>First Name *</label>
@@ -456,6 +458,8 @@
 
 <script src="main.js"></script>
 <script>
+const OA_APPLY_ENDPOINT = 'https://workspace.africakai.co.za/api/oa-apply';
+
 async function submitOaForm(e) {
   e.preventDefault();
   const form = document.getElementById('oaForm');
@@ -463,12 +467,27 @@ async function submitOaForm(e) {
   btn.textContent = 'Submitting...';
   btn.disabled = true;
   try {
-    const response = await fetch(form.action, {
+    const fd = new FormData(form);
+    const payload = {
+      first_name: fd.get('First Name'),
+      last_name: fd.get('Last Name'),
+      email: fd.get('Email'),
+      phone: fd.get('Phone'),
+      province: fd.get('Province'),
+      professional_category: fd.get('Professional Category'),
+      years_experience: fd.get('Years of Experience'),
+      services: fd.get('Services'),
+      regulatory_body: fd.get('Regulatory Body'),
+      membership_number: fd.get('Membership Number'),
+      professional_summary: fd.get('Professional Summary'),
+    };
+    const response = await fetch(OA_APPLY_ENDPOINT, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
-    if (response.ok) {
+    const json = await response.json();
+    if (response.ok && json.success) {
       form.style.display = 'none';
       const s = document.getElementById('oaFormSuccess');
       s.style.display = 'block';
@@ -476,7 +495,7 @@ async function submitOaForm(e) {
     } else {
       btn.textContent = 'Submit Registration';
       btn.disabled = false;
-      alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+      alert('Something went wrong: ' + (json.error || 'please try again') + '. Or email us at admin@africakai.co.za');
     }
   } catch {
     btn.textContent = 'Submit Registration';
