@@ -407,6 +407,21 @@
             <label>Brief Professional Summary</label>
             <textarea name="Professional Summary" placeholder="Describe your experience and what you specialise in..."></textarea>
           </div>
+          <div class="form-group">
+            <label>ID Document *</label>
+            <input type="file" id="oaIdDocument" name="ID Document" accept=".pdf,.jpg,.jpeg,.png" required/>
+            <p class="form-note" style="color:rgba(255,255,255,0.35);">Certified copy or clear scan/photo of your SA ID or passport. Max 1MB.</p>
+          </div>
+          <div class="form-group">
+            <label>Proof of Address</label>
+            <input type="file" id="oaProofOfAddress" name="Proof of Address" accept=".pdf,.jpg,.jpeg,.png"/>
+            <p class="form-note" style="color:rgba(255,255,255,0.35);">Utility bill or bank statement, less than 3 months old. Max 1MB.</p>
+          </div>
+          <div class="form-group">
+            <label>Qualification Certificate</label>
+            <input type="file" id="oaQualificationCert" name="Qualification Certificate" accept=".pdf,.jpg,.jpeg,.png"/>
+            <p class="form-note" style="color:rgba(255,255,255,0.35);">Your highest relevant qualification. Max 1MB.</p>
+          </div>
           <div class="checkbox-group">
             <input type="checkbox" id="oaAssessment" name="Agreed to Assessment Terms" value="Yes" required/>
             <label for="oaAssessment" style="color:rgba(255,255,255,0.55);">I understand a technical assessment may be required and that earnings are based on output and quality.</label>
@@ -459,6 +474,40 @@
 <script src="main.js"></script>
 <script>
 const OA_APPLY_ENDPOINT = 'https://workspace.africakai.co.za/api/oa-apply';
+const OA_MAX_DOC_BYTES = 1000000; // matches the backend's per-document limit
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]); // strip the data: prefix
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function collectOaDocuments(form) {
+  const fields = [
+    { id: 'oaIdDocument', category: 'ID Document' },
+    { id: 'oaProofOfAddress', category: 'Proof of Address' },
+    { id: 'oaQualificationCert', category: 'Qualification Certificate' },
+  ];
+  const documents = [];
+  for (const f of fields) {
+    const input = document.getElementById(f.id);
+    const file = input?.files?.[0];
+    if (!file) continue;
+    if (file.size > OA_MAX_DOC_BYTES) {
+      throw new Error(`${f.category} is too large (${Math.round(file.size / 1024)}KB) — please keep each document under 1MB.`);
+    }
+    documents.push({
+      category: f.category,
+      filename: file.name,
+      file_type: file.type,
+      content_base64: await readFileAsBase64(file),
+    });
+  }
+  return documents;
+}
 
 async function submitOaForm(e) {
   e.preventDefault();
@@ -468,6 +517,7 @@ async function submitOaForm(e) {
   btn.disabled = true;
   try {
     const fd = new FormData(form);
+    const documents = await collectOaDocuments(form);
     const payload = {
       first_name: fd.get('First Name'),
       last_name: fd.get('Last Name'),
@@ -480,6 +530,7 @@ async function submitOaForm(e) {
       regulatory_body: fd.get('Regulatory Body'),
       membership_number: fd.get('Membership Number'),
       professional_summary: fd.get('Professional Summary'),
+      documents,
     };
     const response = await fetch(OA_APPLY_ENDPOINT, {
       method: 'POST',
@@ -495,14 +546,15 @@ async function submitOaForm(e) {
     } else {
       btn.textContent = 'Submit Registration';
       btn.disabled = false;
-      alert('Something went wrong: ' + (json.error || 'please try again') + '. Or email us at admin@africakai.co.za');
+      alert('Something went wrong: ' + (json.error || 'please try again') + '. Or email us at bizcom@africakai.co.za');
     }
-  } catch {
+  } catch (err) {
     btn.textContent = 'Submit Registration';
     btn.disabled = false;
-    alert('Something went wrong. Please try again or email us at admin@africakai.co.za');
+    alert((err && err.message) ? err.message : 'Something went wrong. Please try again or email us at bizcom@africakai.co.za');
   }
 }
 </script>
 </body>
 </html>
+
