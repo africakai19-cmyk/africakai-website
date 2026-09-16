@@ -225,7 +225,7 @@
         <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">✅ Application Received</p>
         <p>Thank you for applying. We will review your application and be in touch within 5 business days.</p>
       </div>
-      <form id="careerForm" action="https://formspree.io/f/myklnbyy" method="POST" onsubmit="submitCareerForm(event)">
+      <form id="careerForm" onsubmit="submitCareerForm(event)">
         <div class="form-row">
           <div class="form-group">
             <label>First Name *</label>
@@ -359,6 +359,15 @@
 
 <script src="main.js"></script>
 <script>
+// Previously posted straight to a Formspree endpoint, which only ever
+// landed as an email in admin@africakai.co.za's inbox — it never reached
+// the orange_army application pipeline, so nobody could accept or decline
+// these applicants in the platform. Fixed to submit to the same real
+// intake endpoint orange-army.html's registration form already uses
+// (api/_intake-handlers/oa-apply.js -> oa_applications, status 'pending',
+// reviewed on the platform's Orange Army page).
+const OA_APPLY_ENDPOINT = 'https://workspace.africakai.co.za/api/oa-apply';
+
 async function submitCareerForm(e) {
   e.preventDefault();
   const form = document.getElementById('careerForm');
@@ -366,10 +375,31 @@ async function submitCareerForm(e) {
   btn.textContent = 'Submitting...';
   btn.disabled = true;
   try {
-    const response = await fetch(form.action, {
+    const fd = new FormData(form);
+    // Field names on this page predate the shared intake endpoint, so map
+    // them onto what oa-apply.js expects. Nothing is dropped: fields with
+    // no direct match (e.g. "software") are passed through as extra keys,
+    // which the endpoint stores verbatim in raw_submission rather than
+    // discarding.
+    const payload = {
+      first_name: fd.get('firstName'),
+      last_name: fd.get('lastName'),
+      email: fd.get('email'),
+      phone: fd.get('phone'),
+      province: fd.get('province'),
+      professional_category: fd.get('specialisation'),
+      qualifications: fd.get('qualification'),
+      years_experience: fd.get('experience'),
+      regulatory_body: fd.get('regulatory_body'),
+      membership_number: fd.get('reg_number'),
+      software: fd.get('software'),
+      message: fd.get('about'),
+      source: 'careers_page',
+    };
+    const response = await fetch(OA_APPLY_ENDPOINT, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
     });
     if (response.ok) {
       form.style.display = 'none';
