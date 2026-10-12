@@ -176,14 +176,21 @@
           <label for="qualification">Qualification / Programme</label>
           <input type="text" id="qualification" name="qualification" maxlength="160" placeholder="e.g. Business Management, Marketing Management"/>
         </div>
+        <div class="form-group">
+          <label for="study_status">Where are you with your studies?</label>
+          <select id="study_status" name="study_status" onchange="updateStudyFields()">
+            <option value="studying">I am currently studying</option>
+            <option value="completed">I have completed my studies</option>
+          </select>
+        </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="study_level">Level of Study</label>
+            <label for="study_level" id="levelLabel">Level of Study</label>
             <select id="study_level" name="study_level"><option value="">Select</option><option>NCV Level 2</option><option>NCV Level 3</option><option>NCV Level 4</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option><option>N6</option><option>Other</option></select>
           </div>
           <div class="form-group">
-            <label for="expected_completion_year">Expected Completion Year</label>
-            <select id="expected_completion_year" name="expected_completion_year"><option value="">Select</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option><option>2031</option></select>
+            <label for="expected_completion_year" id="yearLabel">Expected Completion Year</label>
+            <select id="expected_completion_year" name="expected_completion_year"></select>
           </div>
         </div>
 
@@ -199,7 +206,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="needs_wil_placement">Do you still need workplace experience (WIL) to complete your qualification?</label>
+          <label for="needs_wil_placement">Do you still need workplace experience (WIL) to complete your qualification or diploma?</label>
           <select id="needs_wil_placement" name="needs_wil_placement"><option value="">Not sure</option><option value="true">Yes</option><option value="false">No</option></select>
         </div>
 
@@ -244,6 +251,24 @@
 <script>
 const MENTORSHIP_ENDPOINT = 'https://workspace.africakai.co.za/api/public-intake?form=mentorship-apply';
 
+// Current students pick an expected year ahead; graduates pick the year they
+// finished, looking back, so someone who completed N6 years ago can say so.
+function updateStudyFields() {
+  const completed = document.getElementById('study_status').value === 'completed';
+  const thisYear = new Date().getFullYear();
+  const sel = document.getElementById('expected_completion_year');
+  let opts = '<option value="">Select</option>';
+  if (completed) {
+    for (let y = thisYear; y >= thisYear - 20; y--) opts += '<option>' + y + '</option>';
+  } else {
+    for (let y = thisYear; y <= thisYear + 5; y++) opts += '<option>' + y + '</option>';
+  }
+  sel.innerHTML = opts;
+  document.getElementById('yearLabel').textContent = completed ? 'Year You Completed' : 'Expected Completion Year';
+  document.getElementById('levelLabel').textContent = completed ? 'Highest Level Completed' : 'Level of Study';
+}
+document.addEventListener('DOMContentLoaded', updateStudyFields);
+
 function toggleFunder() {
   const funded = document.getElementById('is_funded').value === 'yes';
   document.getElementById('funderGroup').style.display = funded ? 'block' : 'none';
@@ -283,6 +308,7 @@ async function submitApplication(e) {
     province: form.province.value,
     qualification: form.qualification.value,
     study_level: form.study_level.value,
+    study_status: form.study_status.value,
     expected_completion_year: form.expected_completion_year.value || null,
     is_funded: form.is_funded.value,
     funder_name: form.funder_name.value,
