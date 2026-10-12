@@ -171,3 +171,16 @@ footer{background:var(--charcoal);color:white;padding:60px 6% 32px;}
   .page-hero{padding:100px 5% 50px;}
   nav{padding:0 5%;}
 }
+
+/* --- SEO service pages: FAQ + related links + card link --- */
+.faq-wrap{max-width:820px;margin:0 auto;}
+.faq-item{border-bottom:1px solid rgba(0,0,0,0.08);padding:18px 0;}
+.faq-item summary{cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:0.5px;color:var(--charcoal);list-style:none;display:flex;justify-content:space-between;gap:16px;}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-item summary::after{content:'+';color:var(--orange);font-size:1.4rem;line-height:1;}
+.faq-item[open] summary::after{content:'\2212';}
+.faq-item p{margin-top:12px;font-size:0.95rem;color:var(--grey);line-height:1.8;}
+.related-links{margin-top:36px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 20px;font-size:0.9rem;color:var(--grey);}
+.related-link,.card-more{color:var(--orange);font-weight:600;}
+.related-link:hover,.card-more:hover{text-decoration:underline;}
+.card-more{display:inline-block;margin-top:18px;font-size:0.9rem;}
