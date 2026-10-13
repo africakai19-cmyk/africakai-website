@@ -198,3 +198,10 @@ footer{background:var(--charcoal);color:white;padding:60px 6% 32px;}
 .guide-card:hover{box-shadow:var(--shadow);}
 .guide-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;color:var(--charcoal);margin-bottom:10px;}
 .guide-card p{font-size:0.9rem;color:var(--grey);margin-bottom:0;}
+
+/* --- About page --- */
+.about-quote{margin:24px 0 8px;padding:22px 26px;border-left:4px solid var(--orange);background:var(--off-white);font-family:'Playfair Display',serif;font-size:1.15rem;line-height:1.7;color:var(--charcoal);}
+.about-quote span{display:block;margin-top:12px;font-family:'Barlow',sans-serif;font-size:0.85rem;color:var(--grey);}
+.service-card .service-list a{color:var(--orange);font-weight:500;}
+.guide-list-2{grid-template-columns:repeat(2,1fr);}
+@media(max-width:700px){.guide-list-2{grid-template-columns:1fr;}}
