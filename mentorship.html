@@ -229,6 +229,8 @@
 
         <label class="mp-consent"><input type="checkbox" id="consent" name="consent"/><span>I agree that AfricaKai (Pty) Ltd may store and use the information on this form to assess my application, contact me about the programme, and, if I am accepted, send me session details. I can ask for my information to be deleted at any time by emailing admin@africakai.co.za. *</span></label>
 
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEgRkcT3lamvCV42" data-action="mentorship_apply" data-callback="tsOk" data-expired-callback="tsExpired" data-error-callback="tsErr" style="margin:0 0 18px;"></div>
+
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Submit Application</button>
       </form>
     </div>
@@ -260,6 +262,18 @@
 
 <script>
 const MENTORSHIP_ENDPOINT = 'https://workspace.africakai.co.za/api/public-intake?form=mentorship-apply';
+
+// Bot check (Cloudflare Turnstile). The widget above runs on its own and hands
+// us a token. If it genuinely cannot run (script blocked, Cloudflare error,
+// nothing back after 15 seconds) we still let a real student apply: the form
+// says so, and the server applies stricter fallback checks instead.
+const formLoadedAt = Date.now();
+let tsToken = null;
+let tsFailed = false;
+function tsOk(token) { tsToken = token; tsFailed = false; }
+function tsExpired() { tsToken = null; }
+function tsErr() { tsToken = null; tsFailed = true; }
+setTimeout(function () { if (!tsToken) tsFailed = true; }, 15000);
 
 // Current students pick an expected year ahead; graduates pick the year they
 // finished, looking back, so someone who completed N6 years ago can say so.
@@ -302,6 +316,9 @@ async function submitApplication(e) {
   if (!form.consent.checked) {
     return showError('Please tick the box to agree to how we use your information.');
   }
+  if (!tsToken && !tsFailed) {
+    return showError('Please wait a moment for the security check above the button to finish, then submit again.');
+  }
 
   const btn = form.querySelector('button[type="submit"]');
   const originalText = btn.textContent;
@@ -326,7 +343,9 @@ async function submitApplication(e) {
     motivation: form.motivation.value,
     consent: true,
     company_website: form.company_website.value,
+    formSeconds: Math.round((Date.now() - formLoadedAt) / 1000),
   };
+  if (tsToken) { payload.turnstileToken = tsToken; } else { payload.turnstileUnavailable = true; }
 
   try {
     const response = await fetch(MENTORSHIP_ENDPOINT, {
@@ -343,6 +362,7 @@ async function submitApplication(e) {
     } else {
       btn.textContent = originalText;
       btn.disabled = false;
+      if (response.status === 403 && window.turnstile) { try { window.turnstile.reset(); } catch (err) {} tsToken = null; tsFailed = false; }
       showError((json.error || 'Something went wrong.') + ' You can also email admin@africakai.co.za.');
     }
   } catch (err) {
@@ -352,6 +372,7 @@ async function submitApplication(e) {
   }
 }
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer onerror="tsErr()"></script>
 <script src="main.js"></script>
 </body>
 </html>
