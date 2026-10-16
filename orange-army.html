@@ -420,6 +420,8 @@
             <input type="checkbox" id="oaAssessment" name="Agreed to Assessment Terms" value="Yes" required/>
             <label for="oaAssessment" style="color:rgba(255,255,255,0.55);">I understand a technical assessment may be required and that earnings are based on output and quality.</label>
           </div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEgRkcT3lamvCV42" data-action="oa_apply" data-theme="dark" data-callback="tsOk" data-expired-callback="tsExpired" data-error-callback="tsErr" style="margin:14px 0 4px;"></div>
+
           <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:12px;">Submit Registration</button>
           <p class="oa-form-note">Your information is handled in accordance with POPIA. We do not share your details.</p>
         </form>
@@ -466,14 +468,28 @@
   </div>
 </footer>
 
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer onerror="tsErr()"></script>
 <script src="main.js"></script>
 <script>
 const OA_APPLY_ENDPOINT = 'https://workspace.africakai.co.za/api/oa-apply';
+
+// Bot check (Cloudflare Turnstile). The widget above the button runs on its
+// own and hands us a token. If it genuinely cannot run (script blocked,
+// Cloudflare error, nothing back after 15 seconds) we still let a real
+// applicant through: the server applies stricter fallback checks instead.
+const formLoadedAt = Date.now();
+let tsToken = null;
+let tsFailed = false;
+function tsOk(token) { tsToken = token; tsFailed = false; }
+function tsExpired() { tsToken = null; }
+function tsErr() { tsToken = null; tsFailed = true; }
+setTimeout(function () { if (!tsToken) tsFailed = true; }, 15000);
 
 async function submitOaForm(e) {
   e.preventDefault();
   const form = document.getElementById('oaForm');
   const btn = form.querySelector('button[type="submit"]');
+  if (!tsToken && !tsFailed) { alert('Please wait a moment for the security check above the button to finish, then submit again.'); return; }
   btn.textContent = 'Submitting...';
   btn.disabled = true;
   try {
@@ -490,7 +506,12 @@ async function submitOaForm(e) {
       regulatory_body: fd.get('Regulatory Body'),
       membership_number: fd.get('Membership Number'),
       professional_summary: fd.get('Professional Summary'),
+      // Without this, the server records website applications as 'platform_join'
+      // (the platform's own page) and they cannot be told apart.
+      source: 'orange_army_page',
+      formSeconds: Math.round((Date.now() - formLoadedAt) / 1000),
     };
+    if (tsToken) { payload.turnstileToken = tsToken; } else { payload.turnstileUnavailable = true; }
     const response = await fetch(OA_APPLY_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -503,6 +524,7 @@ async function submitOaForm(e) {
       s.style.display = 'block';
       s.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
+      if (response.status === 403 && window.turnstile) { try { window.turnstile.reset(); } catch (err) {} tsToken = null; tsFailed = false; }
       btn.textContent = 'Submit Registration';
       btn.disabled = false;
       alert('Something went wrong: ' + (json.error || 'please try again') + '. Or email us at bizcom@africakai.co.za');
