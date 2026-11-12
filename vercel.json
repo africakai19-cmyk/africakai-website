@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/guide-host-funded-tvet-student.html",
+      "destination": "/guide-host-funded-tvet-intern.html",
+      "permanent": true
+    }
+  ]
+}
